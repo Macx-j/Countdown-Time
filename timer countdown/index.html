@@ -2,34 +2,60 @@
 <html>
 <head>
     <link rel="stylesheet" href="style.css" />
-        <script src="script.js" defer></script>
-    <title>New Year Countdown</title>
+    <script src="script.js" defer></script>
+<title>New Year Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #countdown {
+            font-size: 50px;
+        }
+
+        #fireworks-container {
+            position: relative;
+        }
+
+        .firework {
+            position: absolute;
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-radius: 30%;
+            background-color: red;
+            animation: fireworks 1s linear;
+        }
+
+        @keyframes fireworks {
+            0% {
+                transform: scale(0);
+                opacity: 2;
+            }
+            100% {
+                transform: scale(5);
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>New Year</h1>
-    <div class="countdown-container">
-        <div class="countdown-el days-c">
-            <p class="big-text" id="days">0</p>
-            <span>days</span>
-        </div>
-        <div class="countdown-el hours-c">
-            <p class="big-text" id="hours">0</p>
-            <span>hours</span>
-        </div>
-        <div class="countdown-el mins-c">
-            <p class="big-text" id="mins">0</p>
-            <span>mins</span>
-        </div>
-        <div class="countdown-el seconds-c">
-            <p class="big-text" id="seconds">0</p>
-            <span>seconds</span>
-        </div>
+    <h1>New Years</h1>
+    <div id="countdown">
+        <span id="days">0</span> days
+        <span id="hours">0</span> hours
+        <span id="mins">0</span> minutes
+        <span id="seconds">0</span> seconds
     </div>
+    <div id="fireworks-container"></div>
+
     <script>
         const daysEl = document.getElementById("days");
         const hoursEl = document.getElementById("hours");
         const minsEl = document.getElementById("mins");
         const secondsEl = document.getElementById("seconds");
+        const fireworksContainer = document.getElementById("fireworks-container");
 
         const newYears = "1 Jan 2024";
 
@@ -48,10 +74,36 @@
             hoursEl.innerHTML = formatTime(hours);
             minsEl.innerHTML = formatTime(mins);
             secondsEl.innerHTML = formatTime(seconds);
+
+            // Create a random firework at every second
+            createFirework();
         }
 
         function formatTime(time) {
             return time < 10 ? `0${time}` : time;
+        }
+
+        function createFirework() {
+            const firework = document.createElement("div");
+            firework.className = "firework";
+            firework.style.backgroundColor = getRandomColor();
+            firework.style.left = Math.random() * window.innerWidth + "px";
+            firework.style.top = Math.random() * window.innerHeight + "px";
+            fireworksContainer.appendChild(firework);
+
+            // Remove the firework after the animation
+            firework.addEventListener("animationend", () => {
+                fireworksContainer.removeChild(firework);
+            });
+        }
+
+        function getRandomColor() {
+            const letters = "0123456789ABCDEF";
+            let color = "#";
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
 
         // Initial call
@@ -60,6 +112,7 @@
         // Update the countdown every second
         setInterval(countdown, 1000);
     </script>
-
-    </body>
+</body>
 </html>
+
+
